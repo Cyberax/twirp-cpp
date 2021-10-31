@@ -1,5 +1,5 @@
 from conans import ConanFile, CMake, tools
-import re, os
+import re
 
 def get_version():
     git = tools.Git()
@@ -13,21 +13,11 @@ def get_version():
     except:
         return None
 
-class TwirpTestProject(ConanFile):
+class ExampleProject(ConanFile):
     requires = [
         "twirp-cpp/%s" % get_version(),
         "cpp-httplib/0.9.7",
         "jsoncpp/1.9.3",
         "openssl/1.1.1l",
-        "gtest/1.10.0",
     ]
     generators = "cmake"
-
-    def build(self):
-        cmake = CMake(self)
-        cmake.configure()
-        cmake.build()
-
-    def test(self):
-        os.chdir("bin")
-        self.run("./gproto")

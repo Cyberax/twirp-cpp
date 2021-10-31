@@ -1,7 +1,0 @@
-[requires]
-gtest/1.10.0
-protobuf/3.12.4
-abseil/20210324.2
-
-[generators]
-cmake

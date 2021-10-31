@@ -39,7 +39,13 @@ message WeatherStation {
 
 // A simple test service
 service WSProvider {
-  rpc FindWeatherStation(WeatherStationId) returns (WeatherStation);
-  rpc DeleteWeatherStation(WeatherStationId) returns (WeatherStation);
+
+  // A long detached comment describing what the method does.
+  // Note, it will be preserved in the generated source code.
+  // Now try that with gRPC!
+  rpc FindWeatherStation(WeatherStationId) returns (WeatherStation); // This is an inline comment
+
+  rpc DeleteWeatherStation(WeatherStationId) returns (WeatherStation); // Inline 2!
   rpc UpdateWeatherStation(WeatherStation) returns (WeatherStationId);
+  // This is a trailing comment. Must preserve.
 }
