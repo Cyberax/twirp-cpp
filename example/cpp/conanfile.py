@@ -20,5 +20,7 @@ class ExampleProject(ConanFile):
         "cpp-httplib/0.9.7",
         "jsoncpp/1.9.3",
         "openssl/1.1.1l",
+        "protobuf/3.12.4",
+        "abseil/20210324.2",
     ]
     generators = "cmake"

@@ -23,7 +23,7 @@ constexpr ErrCodeEntry CodeMap[] {
     // The client sent a message which could not be decoded. This may mean that
     // the message was encoded improperly or that the client and server have incompatible
     // message definitions.
-    {"malformed", 400, absl::StatusCode::kInvalidArgument}, // Internal error
+    {"malformed", 400, absl::StatusCode::kInvalidArgument}, // Internal error, used in Twirp server code
     // Operation expired before completion. For operations that change the state of the
     // system, this error may be returned even if the operation has completed successfully (timeout).
     {"deadline_exceeded", 408, absl::StatusCode::kDeadlineExceeded},
@@ -32,7 +32,7 @@ constexpr ErrCodeEntry CodeMap[] {
     // The requested URL path wasn't routable to a Twirp service and method. This is returned
     // by generated server code and should not be returned by application code (use "not_found"
     // or "unimplemented" instead).
-    {"bad_route", 404, absl::StatusCode::kUnimplemented}, // Internal error
+    {"bad_route", 404, absl::StatusCode::kUnimplemented}, // Internal error, used in Twirp server code
     // An attempt to create an entity failed because one already exists.
     {"already_exists", 409, absl::StatusCode::kAlreadyExists},
     // The caller does not have permission to execute the specified operation. It must

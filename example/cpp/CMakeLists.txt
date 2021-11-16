@@ -27,6 +27,8 @@ add_library(protos
 
 target_link_libraries(protos
     CONAN_PKG::twirp-cpp
+    CONAN_PKG::abseil
+    CONAN_PKG::protobuf
     CONAN_PKG::cpp-httplib
     CONAN_PKG::jsoncpp
     CONAN_PKG::openssl

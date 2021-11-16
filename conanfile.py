@@ -21,7 +21,7 @@ class InjectConan(ConanFile):
     name = "twirp-cpp"
     settings = "os", "arch"
     version = get_version()
-    requires = ["protobuf/3.12.4","abseil/20210324.2"]
+    #requires = ["protobuf/3.12.4","abseil/20210324.2"]
 
     def export_sources(self):
         self.copy("src/*")

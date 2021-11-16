@@ -20,6 +20,8 @@ class TwirpTestProject(ConanFile):
         "jsoncpp/1.9.3",
         "openssl/1.1.1l",
         "gtest/1.10.0",
+        "protobuf/3.12.4",
+        "abseil/20210324.2",
     ]
     generators = "cmake"
 
