@@ -78,10 +78,10 @@ class HttplibRequester : public trpc::Requester {
     httplib::Client client_;
     ClientMiddlewares middlewares_;
 public:
-    HttplibRequester(httplib::Client &&client, ClientMiddlewares &&middlewares) :
+    HttplibRequester(httplib::Client &&client, ClientMiddlewares &&middlewares = ClientMiddlewares()) :
         client_(std::move(client)), middlewares_(std::move(middlewares)){}
 
-    HttplibRequester(const std::string &url, ClientMiddlewares &&middlewares) :
+    HttplibRequester(const std::string &url, ClientMiddlewares &&middlewares = ClientMiddlewares()) :
         client_(url), middlewares_(std::move(middlewares)) {}
 
     HttplibRequester(const HttplibRequester&) = delete; // non construction-copyable

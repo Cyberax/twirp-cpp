@@ -15,6 +15,7 @@ def get_version():
 
 class ExampleProject(ConanFile):
     requires = [
+        # In an actual production project, you'd need to fix the twirp-cpp version.
         "twirp-cpp/%s" % get_version(),
         "cpp-httplib/0.9.7",
         "jsoncpp/1.9.3",
