@@ -4,7 +4,7 @@
 cd example/cpp || exit
 mkdir build
 cd build || exit
-cmake ..
+cmake .. -DCMAKE_BUILD_TYPE=Release
 make -j4
 
 cd bin || exit

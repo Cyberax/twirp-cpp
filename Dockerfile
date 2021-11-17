@@ -2,7 +2,7 @@ FROM golang:1.17-bullseye as builder
 
 RUN apt-get update; DEBIAN_FRONTEND=noninteractive apt-get install -yq --no-install-recommends \
     vim-nox less sudo curl python3 python3-distutils python3-setuptools python3-pip \
-    unzip cmake protobuf-compiler libprotobuf-dev
+    unzip cmake
 
 RUN pip3 install conan
 
