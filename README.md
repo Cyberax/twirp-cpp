@@ -144,9 +144,20 @@ Then the first `protobuf_generate` stanza invokes the regular `protoc` compiler 
 bindings for C++. In this case it would produce two file: `gen/service.pb.cc` and `gen/service.pb.h`. These files
 are then added as dependencies to the `webserver` target.
 
+The second `protobuf_generate` stanza creates the Twirp service stubs named: `gen/service_client.hpp`, 
+`gen/service_client.cpp`, `gen/service_server.hpp`, `gen/service_server.cpp`. 
+
 And that's it! CMake does all the required heavy lifting. 
 
 
 ## Creating a server
 
+See SERVER.md for detailed instructions and the discussion of generated code for the server side.
+
 ## Creating a client
+
+See CLIENT.md for detailed instructions and the discussion of generated code for the client side.
+
+## Developing Twirp-Cpp
+
+See DEVELOPMENT.md for detailed instruction on developing/fixing the Twirp-Cpp.

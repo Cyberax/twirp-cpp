@@ -10,6 +10,9 @@ struct ErrCodeEntry {
     absl::StatusCode code_;
 };
 
+// Mapping of errors to absl::StatusCode as defined in https://twitchtv.github.io/twirp/docs/spec_v7.html
+// The mapping is almost one-to-one except for 'malformed' and 'bad_route' codes used in the routing
+// code in the server implementation.
 constexpr ErrCodeEntry CodeMap[] {
     // The operation was cancelled.
     {"canceled", 408, absl::StatusCode::kCancelled},
@@ -74,6 +77,7 @@ constexpr ErrCodeEntry CodeMap[] {
     {"dataloss", 500, absl::StatusCode::kDataLoss},
 };
 
+// Convert a text error code (e.g. 'unavailable') into the corresponding absl::StatusCode.
 inline absl::StatusCode ErrorCodeToStatus(const std::string_view errCode) {
     for(const auto & ent : CodeMap) {
         if (ent.errCode_ == errCode) {
@@ -83,15 +87,18 @@ inline absl::StatusCode ErrorCodeToStatus(const std::string_view errCode) {
     return absl::StatusCode::kUnknown;
 }
 
-inline std::pair<std::string_view, int> StatusToErrorCode(const absl::Status &status) {
+// Convert an absl::StatusCode into a tuple of Twirp error code and the HTTP status code.
+// All absl::StatusCode entries have mapping. Unknown status codes are mapped to ("unknown", 500).
+inline std::pair<std::string_view, int> StatusToErrorCode(const absl::StatusCode &status) {
     for(const auto & ent : CodeMap) {
-        if (ent.code_ == status.code()) {
+        if (ent.code_ == status) {
             return std::make_pair(ent.errCode_, ent.httpCode_);
         }
     }
     return std::make_pair("unknown", 500);
 }
 
+// Convert a text error code (e.g. 'unavailable') into the corresponding HTTP status code.
 inline int ErrorCodeToHttpStatus(const std::string_view errCode) {
     for(const auto & ent : CodeMap) {
         if (ent.errCode_ == errCode) {

@@ -47,7 +47,7 @@ inline void SendError(const absl::Status &status, httplib::Response &resp) {
         }
     });
     if (!hasCodeFromPayload) {
-        auto translated = StatusToErrorCode(status);
+        auto translated = StatusToErrorCode(status.code());
         value["code"] = std::string(translated.first);
         resp.status = translated.second;
     }
