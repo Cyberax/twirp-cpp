@@ -1,3 +1,4 @@
+// This file contains the backend-independent infrastructure for Twirp clients and servers
 #pragma once
 
 #include <span>

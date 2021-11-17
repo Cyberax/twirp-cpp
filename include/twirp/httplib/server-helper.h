@@ -1,3 +1,6 @@
+// This file contains the httplib-based implementation for the server infrastructure for a Twirp service.
+// Please see the https://twitchtv.github.io/twirp/docs/spec_v7.html for details on Twirp specification
+// and https://github.com/Cyberax/twirp-cpp/blob/development/example/cpp/tw-server.cpp for the usage example.
 #pragma once
 
 #include <twirp/rpc-defs.h>
@@ -7,18 +10,34 @@
 
 namespace trpc {
 
+// An error returned if the request's encoding is not 'application/json' or 'application/protobuf'
 constexpr auto MalformedError = std::make_pair("malformed",	400);
+// An error returned if the request can't be matched with a service method
 constexpr auto BadRouteError = std::make_pair("bad_route", 404);
 
+// Pure virtual class for middleware implementations, typically used for things like authentication or logging
 class ServerMiddleware {
 public:
     virtual ~ServerMiddleware() = default;
+    // This method is called just before the request is handled.
+    // arena - the arena for the request, it's guaranteed to survive until the end of the request.
+    // ctx - the request context that can be used to pass the data from this handler to the service method
+    // json - the json flag
+    // request - the raw HTTP request
+    // response - the raw HTTP response (can be used to supply additional headers)
+    // returns - any status but `OkStatus` will stop further request processing and will be returned
+    // to the client.
     virtual absl::Status Handle(gp::Arena *arena, trpc::RequestContext *ctx, bool json,
         const httplib::Request &request, httplib::Response &response) = 0;
 };
 
 typedef std::vector<std::shared_ptr<ServerMiddleware>> ServerMiddlewares;
 
+// Send a Twirp error, used internally in the server handler.
+// See https://twitchtv.github.io/twirp/docs/spec_v7.html for error specifications.
+// err - a pair of error_code and the HTTP status
+// msg - free-form error message
+// resp - the response
 inline void SendError(const std::pair<std::string,int> &err, const std::string &msg, httplib::Response &resp) {
     Json::Value value;
     value["code"] = err.first;
@@ -30,6 +49,9 @@ inline void SendError(const std::pair<std::string,int> &err, const std::string &
     resp.set_content(jsonError, "application/json");
 }
 
+// Send a Twirp error, used internally in the server handler.
+// See https://twitchtv.github.io/twirp/docs/spec_v7.html for error specifications.
+// status - will be translated into a native Twirp error.
 inline void SendError(const absl::Status &status, httplib::Response &resp) {
     Json::Value value;
     Json::Value meta;
@@ -61,6 +83,7 @@ inline void SendError(const absl::Status &status, httplib::Response &resp) {
     resp.set_content(jsonError, "application/json");
 }
 
+// Register the Twirp handlers for the given handler in the HTTP server provided.
 inline void RegisterTwirpHandlers(trpc::ServiceHostBase *handler, httplib::Server *srv,
     const ServerMiddlewares &middleware) {
 

@@ -1,3 +1,4 @@
+// This file contains the mapping of Twirp errors to absl::Status
 #pragma once
 
 #include <absl/status/statusor.h>
